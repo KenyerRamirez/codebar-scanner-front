@@ -75,7 +75,7 @@ const Api = ({ onConfigChange }) => {
       <View style={styles.view}>
         <Text style={styles.title}>Ingresa los datos</Text>
         <TextInput
-          placeholder="https://<DIRECCIÓN>.loca.lt"
+          placeholder="Ingresa el nombre del subdominio"
           value={ip}
           onChangeText={(text) => setIp(text)}
           style={styles.input}

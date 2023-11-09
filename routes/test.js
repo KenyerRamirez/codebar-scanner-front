@@ -6,6 +6,6 @@ export const getApi = async (apiUrl) => {
         return data;
     }catch(error){
         console.log('Dirección y puertos incorrectos.', error)
-        return { Status: 'Failed' };
+        return data.status(404)
     }
 };

@@ -138,22 +138,22 @@ const LectorVisor = ({ config }) => {
         console.log("dirección con async: ", apiUrl);
       }
       if(code.chijo != ''){
-        const [result] = await getCode(code.chijo, apiUrl);
-        if (result) {
+        const result = await getCode(code.chijo, apiUrl);
+        if (typeof result === "object") {
           setinv({
             descrip: result.descrip,
             precio1: result.precio1 + " $",
             existencia: result.existencia + " unidades",
           });
-        // console.log(result);
-        // console.log(inv);
-      } else {
-        Alert.alert(
-          "Lo siento",
-          `No se encontraron productos con ese código, intenta nuevamente.`
+          // console.log(result);
+          // console.log(inv);
+        } else {
+          Alert.alert(
+            "Lo siento",
+            `No se encontraron productos con el código ${code.chijo}, intenta nuevamente.`
           );
-        setcode({ chijo: "" });
-      }
+          setcode({ chijo: "" });
+        }
     }
     } catch (error) {
     } finally {
@@ -186,6 +186,7 @@ const LectorVisor = ({ config }) => {
           placeholder={scanned ? "Escanea o escribe el código" : "..."}
           style={styles.inputCode}
           value={code.chijo}
+          keyboardType="numeric"
           editable={scanned ? true : false}
           onChangeText={(text) => {
             setcode({ chijo: text });
@@ -199,7 +200,7 @@ const LectorVisor = ({ config }) => {
           <TouchableOpacity
             style={styles.search}
             onPress={handleSearch}
-            disabled={code.chijo != "" ? true : false}
+            disabled={inv.descrip != "" ? true : false}
           >
             <Text style={{ color: "white" }}>
               {scanned ? "Buscar" : "Buscando"}

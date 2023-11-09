@@ -43,7 +43,7 @@ const Login = ({ config, handleUser }) => {
               const res = await getApi(apiUrl);
               console.log(apiUrl)
 
-              if (res.Status === "Failed") {
+              if (typeof res !== "object") {
                 Alert.alert(
                   "¡Espera!",
                   "La dirección no se puede conectar a la API, ve a configuración e ingresa el correcto.",
@@ -57,7 +57,7 @@ const Login = ({ config, handleUser }) => {
                   ]
                 );
               } else {
-                // continúa
+                //
               }
             } else {
               // continúa

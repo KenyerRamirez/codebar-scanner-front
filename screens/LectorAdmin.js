@@ -176,23 +176,24 @@ const LectorAdmin = ({ config, UserName }) => {
         console.log("dirección con async: ", apiUrl);
       }
       if (code.chijo != "") {
-        const [result] = await getCode(code.chijo, apiUrl);
+        const result = await getCode(code.chijo, apiUrl);
         // setIsLoading(true);
         // const apiUrlUser = `http://${config.ip}:${config.port}/lector`
         // const [user] = await getUsers(apiUrlUser)
         // setmovement({ id_user: user[0].id_user, cod_prod: code.chijo });
-        if (result) {
+        if (typeof result === 'object') {
           setinv({
             descrip: result.descrip,
             precio1: result.precio1 + " $",
             existencia: result.existencia + " unidades",
           });
-          setmovement({ cod_prod: code.chijo, user: UserName, conteo: "" });
+          console.log(result)
+          setmovement({ cod_prod: result.codigo, user: UserName, conteo: "" });
           console.log(movement);
         } else {
           Alert.alert(
             "Lo siento",
-            "No se encontraron productos con ese código, intenta nuevamente."
+            `No se encontraron productos con el código ${code.chijo}, intenta nuevamente.`
           );
           setcode({ chijo: "" });
         }
@@ -242,6 +243,7 @@ const LectorAdmin = ({ config, UserName }) => {
           placeholder={scanned ? "Escanea o escribe el código" : "..."}
           style={styles.inputCode}
           value={code.chijo}
+          keyboardType="numeric"
           editable={scanned ? true : false}
           onChangeText={(text) => {
             setcode({ chijo: text });
@@ -254,7 +256,7 @@ const LectorAdmin = ({ config, UserName }) => {
         >
           <TouchableOpacity
             style={styles.search}
-            disabled={code.chijo != "" ? true : false}
+            disabled={inv.descrip != "" ? true : false}
             onPress={handleSearch}
           >
             <Text style={{ color: "white" }}>
@@ -303,6 +305,7 @@ const LectorAdmin = ({ config, UserName }) => {
           onChangeText={(text) => handleChange("conteo", text)}
           style={styles.inputAm}
           value={movement.conteo}
+          maxLength={5}
         />
         {movement.conteo == "" || movement.conteo == parseInt("") ? (
           <View style={styles.submitDisabled}>
